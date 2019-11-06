@@ -7,5 +7,19 @@ class debugger():
     def __init__(self):
         pass
     def load(self,path_to_exe):
-        #dwCreation 플래그를 이용해 프로세스를 어떻게 생성할 것인지 판단한다 
-        #
+        
+        creation_flags = DEBUG_PROCESS()
+        
+        startupinfo = STARTUPINFO()
+        process_informaiion = PROCESS_INFORMAIION()
+
+        startupinfo.dwFlags = 0x1
+        startupinfo.wShowWindow = 0x0
+
+        startupinfo.cb = sizeof(startupinfo)
+
+        if kernel32.CreateProcessA(path_to_exe,None,None,None,None,creation_flags,None,None,byref(startupinfo),byref(process_informaiion)):
+            print("[*] We have successfully launched the process !")
+            print("[*]PID : %d"%process_informaiion.dwProcessId)
+        else :
+            print("[*] Error: 0x%08x."%kernel32.GetLastError())
