@@ -8,7 +8,7 @@ class debugger():
         pass
     def load(self,path_to_exe):
         
-        creation_flags = DEBUG_PROCESS()
+        creation_flags = DEBUG_PROCESS
         
         startupinfo = STARTUPINFO()
         process_informaiion = PROCESS_INFORMAIION()
@@ -17,8 +17,8 @@ class debugger():
         startupinfo.wShowWindow = 0x0
 
         startupinfo.cb = sizeof(startupinfo)
-
-        if kernel32.CreateProcessA(path_to_exe,None,None,None,None,creation_flags,None,None,byref(startupinfo),byref(process_informaiion)):
+        #파이썬3.x 대부터 CreateProcessA가 아니라 utf-8E사용하기떄문에 CreateProcessW사용  
+        if kernel32.CreateProcessW(path_to_exe,None,None,None,None,creation_flags,None,None,byref(startupinfo),byref(process_informaiion)):
             print("[*] We have successfully launched the process !")
             print("[*]PID : %d"%process_informaiion.dwProcessId)
         else :
